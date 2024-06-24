@@ -3,7 +3,7 @@ import './App.css';
 function App() {
   return (
     <div className="App">
-      <h2>This Netflix App</h2>
+      <h2 className='text-5xl'>This Netflix App</h2>
     </div>
   );
 }
