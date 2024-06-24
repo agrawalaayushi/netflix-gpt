@@ -1,12 +1,28 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import Header from "./Header";
-
+import validateForm from "../utils/validate";
 const Login = () => {
-  const [isSignIn, setIsSignIn] = useState(false);
+  const [isSignIn, setIsSignIn] = useState(true);
+  const [errorMessage, setErrorMessage] = useState(null);
+
+  const email = useRef(null);
+  const password = useRef(null);
 
   const toggleSignIn = () => {
     setIsSignIn(!isSignIn);
   };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log("email", email.current.value);
+    console.log("password", password.current.value);
+    const message = validateForm(email.current.value, password.current.value);
+
+    setErrorMessage(message);
+
+    //validate the form data
+  };
+
   return (
     <div>
       <Header />
@@ -23,33 +39,41 @@ const Login = () => {
           <h1 className="font-bold p-3  text-3xl rounded">
             {isSignIn ? "Sign In" : "Sign Up"}
           </h1>
-         { !isSignIn && <input
-            className="w-full p-3 text-white bg-slate-500 my-4 rounded"
-            type="text"
-            placeholder="Full Name"
-          />}
+          {!isSignIn && (
+            <input
+              className="w-full p-3 text-white bg-slate-500 my-4 rounded"
+              type="text"
+              placeholder="Full Name"
+            />
+          )}
           <input
+            ref={email}
             className="w-full p-3 text-white bg-slate-500 my-4 rounded"
             type="text"
             placeholder="Email or mobile number"
           />
           <input
+            ref={password}
             className="w-full p-3   text-white bg-slate-500 my-4 rounded"
             type="password"
             placeholder="Password"
           />
+          {errorMessage && (
+            <p className="text-red-600 font-12">{errorMessage}</p>
+          )}
+
           <button
-            className="w-full p-3  text-white  my-4 rounded bg-red-800"
-            
+            className="w-full p-3  text-white my-4 rounded bg-red-800"
             type="submit"
+            onClick={(e) => handleSubmit(e)}
           >
-          {  isSignIn ? 'Sign In' : 'Sign Up'}
+            {isSignIn ? "Sign In" : "Sign Up"}
           </button>
           <p>
             <span className="text-gray-300">
               {isSignIn ? "New to Netflix?" : "Already a user?"}{" "}
             </span>
-          < span className="font-bold cursor-pointer" onClick={toggleSignIn}>
+            <span className="font-bold cursor-pointer" onClick={toggleSignIn}>
               {isSignIn ? "Sign up now." : "Sign in now."}
             </span>
           </p>
